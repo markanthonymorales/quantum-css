@@ -6,21 +6,23 @@ import {
   flattenGraph 
 } from './graph-compiler';
 
+// Define configuration shape allowing macros and polimorph entries
 export interface QuantumCSSOptions {
   debug?: boolean;
+  macros?: Record<string, string>;
+  polimorphs?: Record<string, Record<string, string>>;
 }
 
 export function vitePluginQuantumCSS(options: QuantumCSSOptions = {}): Plugin {
-  // Debug flags run automatically if you run production builds
-  const isDebug = options.debug === true; 
+  const isDebug = options.debug === true;
+  const userMacros = options.macros || {};
+  const userPolimorphs = options.polimorphs || {};
 
   return {
     name: 'vite-plugin-quantum-css',
     enforce: 'pre', 
 
-    // Lifecycle Phase 1: File Transformation & Leaf Assembly Identification
     transform(code: string, id: string) {
-      // Processes all core UI framework markup profiles
       if (!/\.(vue|js|ts|jsx|tsx|svelte|astro)$/.test(id)) return null;
 
       const qClassRegex = /qClass=(?:{`([^`]+)`}|"([^"]+)"|'([^']+)')/g;
@@ -30,15 +32,14 @@ export function vitePluginQuantumCSS(options: QuantumCSSOptions = {}): Plugin {
         const rawContent = templateStr || doubleQuoteStr || singleQuoteStr;
         if (!rawContent) return match;
 
-        // Unwrap composite variants
-        const expanded = compileQuantumClasses(rawContent);
+        // Pass user definitions straight through the compiler process call
+        const expanded = compileQuantumClasses(rawContent, userMacros, userPolimorphs);
 
-        // Feed string directly into single-parameter graph system
         buildStyleGraph(expanded);
 
         if (isDebug) {
           if (!fileLoggedHeader) {
-            console.log(`\n\x1b[35m[Quantum CSS] Analyzing: ${id.split('/').pop()}\x1b[0m`);
+            console.log(`\n\x1b[35m[Quantum CSS] Custom Rules Running: ${id.split('/').pop()}\x1b[0m`);
             fileLoggedHeader = true;
           }
           console.log(`  \x1b[31m[-] qClass:\x1b[0m "${rawContent}"`);
@@ -51,22 +52,17 @@ export function vitePluginQuantumCSS(options: QuantumCSSOptions = {}): Plugin {
       return { code: transformed, map: null };
     },
 
-    // Lifecycle Phase 2: Structural Compand Optimization Delivery
     generateBundle() {
       if (isDebug) {
-        console.log('\x1b[36m[Quantum CSS] Initiating Style Tree Graph Elimination...\x1b[0m');
+        console.log('\x1b[36m[Quantum CSS] Running Graph Optimizer optimization...\x1b[0m');
       }
 
       const cleanGraph = pruneGraph();
       const optimizations = flattenGraph(cleanGraph);
 
       if (isDebug && optimizations.length > 0) {
-        console.log('\x1b[34m[Quantum CSS] Found Duplicated Compounded Structural Node Clusters:\x1b[0m');
+        console.log('\x1b[34m[Quantum CSS] Shared Component Repetitions Found:\x1b[0m');
         optimizations.forEach(opt => console.log(`  ⚡ ${opt}`));
-      }
-
-      if (isDebug) {
-        console.log('\x1b[32m[Quantum CSS] Global tree graph optimization complete!\x1b[0m\n');
       }
     }
   };

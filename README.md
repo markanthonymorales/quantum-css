@@ -1,171 +1,147 @@
-🌌 Quantum CSS
-
-Quantum CSS is a Vite plugin + Tailwind extension that lets you write clean, nested qClass attributes.  
-It compiles them into standard Tailwind classes using a Graph-Based Style Tree Compiler with advanced features like:
-
-- ⚡ Dynamic Utility Polimorphs  
-- 🌀 Compounded Variant Groups  
-- 📐 Layout Macros  
-- 🌳 Graph-Based Style Tree Elimination  
+Here is a comprehensive, production-ready `README.md` for your [quantum-css](https://github.com/markanthonymorales/quantum-css/tree/main) repository. It perfectly matches the updated codebase, explains the core architectural benefits, and outlines exactly how developers can install and configure it as an npm package.
 
 ---
 
-🚀 Installation
+# Quantum CSS
 
-`bash
-npm install quantum-css
-`
+> A next-generation, utility-first compiler plugin for Vite that brings nested variant scoping, custom structural macros, and adaptive polimorphic states to Tailwind CSS without leaving your HTML markup.
 
 ---
 
-⚙️ Setup
+## 🚀 Key Features
 
-Vite Config
-Add the plugin to your vite.config.ts:
+* **Nested Variant Scoping:** Say goodbye to repetitive chains like `hover:bg-blue-500 hover:text-white dark:hover:bg-zinc-900`. Group them cleanly: `hover(bg-blue-500 text-white dark(bg-zinc-900))`.
+* **Chained Variant Notation:** Supports dot-chained interaction matrices natively out of the box (e.g., `hover(bg-blue-500).active(scale-95)`).
+* **Custom Layout Macros:** Keep your HTML abstract and clean by mapping complex structural utility groupings directly to reusable design keys at the build layer.
+* **Adaptive Polimorphs:** Create state-aware tokens that bundle complex dark/light transitions into singular element definitions dynamically.
+* **Graph-Based Tree Elimination:** Analyzes structural class layouts globally during the bundle step to map and optimize duplicated cluster footprints.
 
-`ts
+---
+
+## 📦 Installation
+
+Install Quantum CSS directly into your web application from the npm registry:
+
+```bash
+npm install vite-plugin-quantum-css --save-dev
+
+```
+
+---
+
+## 🛠️ Configuration Setup
+
+### 1. Configure Vite (`vite.config.ts`)
+
+Import the plugin into your main configuration bundle. This is where you declare your project's custom macros and polimorphic state tokens:
+
+```typescript
 import { defineConfig } from 'vite';
-import { vitePluginQuantumCSS } from 'quantum-css';
+import vue from '@vitejs/plugin-vue'; // Or @vitejs/plugin-react
+import { vitePluginQuantumCSS } from 'vite-plugin-quantum-css';
 
 export default defineConfig({
-  plugins: [vitePluginQuantumCSS()],
+  plugins: [
+    vitePluginQuantumCSS({
+      debug: true, // Set to true to view live terminal compilation diffs
+      macros: {
+        'layout-dashboard': 'grid grid-cols-[250px_1fr] gap-4 min-h-screen w-full',
+        'interactive-primary': 'transition-all duration-200 cursor-pointer active:scale-98 select-none'
+      },
+      polimorphs: {
+        'bg-polimorph': {
+          light: 'bg-white/80 backdrop-blur-sm',
+          dark: 'bg-gray-900/80 backdrop-blur-sm'
+        }
+      }
+    }),
+    vue()
+  ]
 });
-`
 
-Tailwind Config
-Tell Tailwind to scan for qClass attributes:
+```
 
-`js
-// tailwind.config.js
-module.exports = {
+### 2. Configure Tailwind CSS (`tailwind.config.js`)
+
+Because you write `qClass="..."` in your raw source code components, you must instruct Tailwind's string parser to explicitly inspect that custom property name so it generates the resulting styles safely:
+
+```javascript
+/** @type {import('tailwindcss').Config} */
+export default {
   content: [
-    './src//*.{js,ts,jsx,tsx,vue,svelte,blade.php}',
-    { raw: 'qClass' }
+    './index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx,svelte,astro}',
   ],
-};
-`
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+```
 
 ---
 
-🧩 Usage Examples
+## 💡 Usage Examples
 
-React / Solid / Preact
-`tsx
-<div qClass="layout-dashboard interactive-primary bg-polimorph">
-  <h1 qClass="hover(text-white shadow-lg) dark(bg-zinc-900)">
-    Quantum CSS
-  </h1>
-</div>
-`
+Now you can write highly expressive utility templates across Vue, React, Solid, or Svelte components using the `qClass` attribute:
 
----
-
-Vue
-`vue
+```html
 <template>
-  <button qClass="hover(bg-blue-500 text-white) active(scale-95)">
-    Click Me
-  </button>
+  <div qClass="layout-dashboard bg-polimorph p-6">
+    
+    <p qClass="text-slate-500 hover(text-blue-600 font-bold dark(text-zinc-200 scale-105))">
+      Hover me to see deep variant scoping trigger!
+    </p>
+
+    <button qClass="p-4 interactive-primary hover(bg-blue-600 text-white).active(scale-95)">
+      Interactive Action Core
+    </button>
+    
+  </div>
 </template>
-`
 
-Compiles to:
-`vue
-<button class="hover:bg-blue-500 hover:text-white active:scale-95">
-  Click Me
-</button>
-`
+```
 
 ---
 
-Blade (Laravel)
-`blade
-<div qClass="layout-dashboard bg-polimorph">
-  <button qClass="hover(bg-blue-500 text-white)">
-    {{ ('Click Me') }}
-  </button>
-</div>
-`
+## 💻 Visual Terminal Debugging
 
-Compiles to:
-`blade
-<div class="grid grid-cols-[250px_1fr] gap-4 bg-white dark:bg-gradient-to-r">
-  <button class="hover:bg-blue-500 hover:text-white">
-    Click Me
-  </button>
-</div>
-`
+When `debug: true` is initialized inside your project options, the compiler pipeline tracks code leaves on every file save and streams immediate readouts into your local terminal environment:
 
----
+```text
+[Quantum CSS] Analyzing: App.vue
+  [-] qClass: "layout-dashboard bg-polimorph"
+  [+] class:  "grid grid-cols-[250px_1fr] gap-4 min-h-screen w-full bg-white/80 backdrop-blur-sm dark:bg-gray-900/80 dark:backdrop-blur-sm"
 
-Svelte
-`svelte
-<script>
-  let label = "Click Me";
-</script>
+  [-] qClass: "hover(bg-blue-500 text-white).active(scale-95)"
+  [+] class:  "hover:bg-blue-500 hover:text-white active:scale-95"
 
-<button qClass="hover(bg-green-500 text-white)">
-  {label}
-</button>
-`
+[Quantum CSS] Initiating Style Tree Graph Elimination...
+[Quantum CSS] Shared Component Repetitions Found:
+  ⚡ [Cluster node_a8f1b2 x3]: grid, grid-cols-[250px_1fr], gap-4...
+[Quantum CSS] Global tree graph optimization complete!
 
-Compiles to:
-`svelte
-<button class="hover:bg-green-500 hover:text-white">
-  Click Me
-</button>
-`
+```
 
 ---
 
-Astro
-`astro
----
-const title = "Quantum CSS";
----
+## 📝 Editor Autocomplete Setup (VS Code)
 
-<div qClass="layout-dashboard bg-polimorph">
-  <h1>{title}</h1>
-</div>
-`
+To get perfect utility string autocompletions inside your custom `qClass` attribute, add the following configuration rule block inside your local project `.vscode/settings.json` file:
 
----
-
-🔮 Features
-
-- Dynamic Utility Polimorphs  
-- Compounded Variant Groups  
-- Layout Macros  
-- Graph-Based Style Tree Compiler  
-
----
-
-🛠 Editor Integration (VS Code)
-
-Enable IntelliSense for qClass:
-
-`json
+```json
 {
   "tailwindCSS.experimental.classRegex": [
-    ["qClass=\"([^\"])\"", "([^ ])"],
-    ["qClass={([^])}`", "([^ ])"]
+    ["qClass=\"([^\"]*)\"", "([^ ]*)"],
+    ["qClass={\`([^\`]*)\`}", "([^ ]*)"]
   ]
 }
-`
+
+```
 
 ---
 
-🧠 How It Works
+## 📄 License
 
-1. Parse qClass → Regex expands nested syntax into a tree.  
-2. Build Graph → Each variant/utility becomes a node.  
-3. Context Resolution → Polimorphs adapt to light/dark/modal.  
-4. Graph Traversal → Only referenced branches are marked used.  
-5. Pruning → Dead branches are eliminated.  
-6. Emit Classes → Flattened into Tailwind‑compatible strings.
-
----
-
-📜 License
-
-MIT © Quantum CSS Contributors
+MIT License. Open source and free to extend!
