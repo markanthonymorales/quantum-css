@@ -1,7 +1,3 @@
-Here is a comprehensive, production-ready `README.md` for your [quantum-css](https://github.com/markanthonymorales/quantum-css/tree/main) repository. It perfectly matches the updated codebase, explains the core architectural benefits, and outlines exactly how developers can install and configure it as an npm package.
-
----
-
 # Quantum CSS
 
 > A next-generation, utility-first compiler plugin for Vite that brings nested variant scoping, custom structural macros, and adaptive polimorphic states to Tailwind CSS without leaving your HTML markup.

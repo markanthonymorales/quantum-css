@@ -1,5 +1,5 @@
 {
-  "name": "quantum-css",
+  "name": "vite-plugin-quantum-css",
   "version": "1.0.0",
   "description": "Quantum CSS: A Vite plugin + Tailwind extension with graph-based style tree compiler, dynamic polimorphs, and layout macros.",
   "type": "module",
@@ -14,7 +14,7 @@
     "vite",
     "css",
     "plugin",
-    "quantum-css",
+    "vite-plugin-quantum-css",
     "utility-first",
     "graph-compiler"
   ],
