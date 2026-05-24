@@ -106,17 +106,17 @@ Now you can write highly expressive utility templates across Vue, React, Solid, 
 When `debug: true` is initialized inside your project options, the compiler pipeline tracks code leaves on every file save and streams immediate readouts into your local terminal environment:
 
 ```text
-[Quantum CSS] Analyzing: App.vue
+[Vite Plugin Quantum CSS] Analyzing: App.vue
   [-] qClass: "layout-dashboard bg-polimorph"
   [+] class:  "grid grid-cols-[250px_1fr] gap-4 min-h-screen w-full bg-white/80 backdrop-blur-sm dark:bg-gray-900/80 dark:backdrop-blur-sm"
 
   [-] qClass: "hover(bg-blue-500 text-white).active(scale-95)"
   [+] class:  "hover:bg-blue-500 hover:text-white active:scale-95"
 
-[Quantum CSS] Initiating Style Tree Graph Elimination...
-[Quantum CSS] Shared Component Repetitions Found:
+[Vite Plugin Quantum CSS] Initiating Style Tree Graph Elimination...
+[Vite Plugin Quantum CSS] Shared Component Repetitions Found:
   ⚡ [Cluster node_a8f1b2 x3]: grid, grid-cols-[250px_1fr], gap-4...
-[Quantum CSS] Global tree graph optimization complete!
+[Vite Plugin Quantum CSS] Global tree graph optimization complete!
 
 ```
 
