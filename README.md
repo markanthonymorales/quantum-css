@@ -16,7 +16,7 @@
 
 ## 📦 Installation
 
-Install Vite Plugin Quantum CSS directly into your web application from the npm registry:
+Install the plugin directly into your web application framework from the npm registry:
 
 ```bash
 npm install vite-plugin-quantum-css --save-dev
@@ -29,7 +29,7 @@ npm install vite-plugin-quantum-css --save-dev
 
 ### 1. Configure Vite (`vite.config.ts`)
 
-Import the plugin into your main configuration bundle. This is where you declare your project's custom macros and polimorphic state tokens:
+Import the plugin into your main configuration bundle using the exact module name:
 
 ```typescript
 import { defineConfig } from 'vite';
@@ -59,7 +59,7 @@ export default defineConfig({
 
 ### 2. Configure Tailwind CSS (`tailwind.config.js`)
 
-Because you write `qClass="..."` in your raw source code components, you must instruct Tailwind's string parser to explicitly inspect that custom property name so it generates the resulting styles safely:
+Because you write `qClass="..."` in your raw source code components, you must instruct Tailwind's string parser to explicitly inspect your component directory tree so it generates the resulting styles safely:
 
 ```javascript
 /** @type {import('tailwindcss').Config} */
@@ -106,17 +106,17 @@ Now you can write highly expressive utility templates across Vue, React, Solid, 
 When `debug: true` is initialized inside your project options, the compiler pipeline tracks code leaves on every file save and streams immediate readouts into your local terminal environment:
 
 ```text
-[Vite Plugin Quantum CSS] Analyzing: App.vue
+[Quantum CSS] Analyzing: App.vue
   [-] qClass: "layout-dashboard bg-polimorph"
   [+] class:  "grid grid-cols-[250px_1fr] gap-4 min-h-screen w-full bg-white/80 backdrop-blur-sm dark:bg-gray-900/80 dark:backdrop-blur-sm"
 
   [-] qClass: "hover(bg-blue-500 text-white).active(scale-95)"
   [+] class:  "hover:bg-blue-500 hover:text-white active:scale-95"
 
-[Vite Plugin Quantum CSS] Initiating Style Tree Graph Elimination...
-[Vite Plugin Quantum CSS] Shared Component Repetitions Found:
+[Quantum CSS] Initiating Style Tree Graph Elimination...
+[Quantum CSS] Shared Component Repetitions Found:
   ⚡ [Cluster node_a8f1b2 x3]: grid, grid-cols-[250px_1fr], gap-4...
-[Vite Plugin Quantum CSS] Global tree graph optimization complete!
+[Quantum CSS] Global tree graph optimization complete!
 
 ```
 
