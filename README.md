@@ -1,4 +1,4 @@
-# Quantum CSS
+# Vite Plugin Quantum CSS
 
 > A next-generation, utility-first compiler plugin for Vite that brings nested variant scoping, custom structural macros, and adaptive polimorphic states to Tailwind CSS without leaving your HTML markup.
 
@@ -16,7 +16,7 @@
 
 ## 📦 Installation
 
-Install Quantum CSS directly into your web application from the npm registry:
+Install Vite Plugin Quantum CSS directly into your web application from the npm registry:
 
 ```bash
 npm install vite-plugin-quantum-css --save-dev
